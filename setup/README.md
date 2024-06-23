@@ -1,13 +1,30 @@
 # How to setup tutorial servers on MMCloud
 
-## Login to the Opcenter
+## Use mm_interactive.sh
+
+### Clone the Repository to Get the Script
+To obtain the script, first clone the repository from GitHub:
+```bash
+git clone https://github.com/rfeng2023/mmcloud.git
+```
+
+### Submit an Interactive Job
+Submit an interactive job using the `mm_interactive.sh` script with specified parameters:
+```bash
+bash mm_interactive.sh --no-mount -i docker.io/yiweizh/rockefeller-jupyter --job_name firstname_lastname -ide jupyter
+```
+After submitting the job, enter your account and password following instructions, and wait for the output that starts with `To access the server, copy this URL in a browser:`. Once this message appears, copy the URL provided and paste it into a web browser to access the Jupyter server.
+
+## Use command
+
+### Login to the Opcenter
 
 You would need to log in before submitting jobs to launch the Jupyter instances.
 ```
 float login -u <username> -p <password> -a <opcenter_IP>
 ```
 
-## Start a server using Float CLI
+### Start a server using Float CLI
 
 Assuming that 
 
@@ -30,8 +47,8 @@ CLI Options Breakdown:
 - `--gateway` (Optional) Specify the gateway you want the job to be attached to
 - The contexts after the pipe `|` will extract and print job ID to the terminal screen which is relevant to keep for suspending and restarting purpose
 
-## Retrieve Login Token for the server
-### CLI Way
+### Retrieve Login Token for the server
+#### CLI Way
 Remember to substitite your job ID.
 
 The first step is to get the IP address and the port.
@@ -49,7 +66,7 @@ The actual url could be constructed as follow:
 ```
 new_url="http://$IP_ADDRESS/$token"
 ```
-### Manual Way
+#### Manual Way
 After the job is in `Execution` stage on MMC, please retrieve the Jupyter login token in stderr.autosave.
 Inside your job, go to Attachments -> stderr.autosave, and search for:
 ```
@@ -59,7 +76,7 @@ Inside your job, go to Attachments -> stderr.autosave, and search for:
 ```
 where you could substitute `127.0.0.1` with the IP of the host instance, and paste the link inside a web browser.
 
-## Suspend, resume and cancel
+### Suspend, resume and cancel
 
 ```
 float suspend -j <job_id>
@@ -67,9 +84,9 @@ float resume -j <job_id>
 float cancel -j <job_id>
 ```
 
-## For teaching assistants
+### For teaching assistants
 
-### Initial setup
+#### Initial setup
 
 - Follow instruction above aiming at successfully setting up one server, and able to login to it, to suspend and to resume
 - Write a script to
@@ -80,7 +97,7 @@ float cancel -j <job_id>
 - For the jupyter server list of URL and student names, generate a file [like this](https://github.com/statgenetics/statgen-courses/blob/master/.github/workflows/rockefeller_2024.csv) through a pull request. It can be any name but should have `csv` format and extension. 
 - A couple of minutes after the PR is accepted, test if for a student listed in the CSV file, the corresponding server is avaiable as `https://statgenetics.github.io/statgen-courses/<firstname_lastname>`
 
-### Maintenance
+#### Maintenance
 
 For Maintenance,
 - After everything is setup and tested, we should keep all the instances suspended
